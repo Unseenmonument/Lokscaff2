@@ -1,0 +1,32 @@
+<h1>Editing Room</h1>
+
+<%= form_for @room, url: {action: "update" }, html: {class: "edit-form"} do |form| %>
+
+
+  <div class="field">
+    <%= form.label :name %>
+    <%= form.text_field :name, id: :room_name %>
+  </div>
+
+  <div class="field">
+    <%= form.label :description %>
+    <%= form.text_area :description, id: :room_description %>
+  </div>
+
+  <div class="field">
+    <%= form.label :guidelines %>
+    <%= form.text_area :guidelines, id: :room_guidelines %>
+  </div>
+
+  <div class="field">
+    <% form.label :user_id %>
+    <%= form.hidden_field :user_id, value: current_user.id %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>
+
+<%= link_to 'Show', @room %> |
+<%= link_to 'Back', rooms_path %>

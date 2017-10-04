@@ -1,0 +1,47 @@
+<h1>Editing Rume</h1>
+
+<%= form_with(model: rume, local: true) do |form| %>
+  <% if rume.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(rume.errors.count, "error") %> prohibited this rume from being saved:</h2>
+
+      <ul>
+      <% rume.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :name %>
+    <%= form.text_field :name, id: :rume_name %>
+  </div>
+
+  <div class="field">
+    <%= form.label :description %>
+    <%= form.text_area :description, id: :rume_description %>
+  </div>
+
+  <div class="field">
+    <%= form.label :guidelines %>
+    <%= form.text_area :guidelines, id: :rume_guidelines %>
+  </div>
+
+  <div class="field">
+    <% form.label :user_id %>
+    <%= form.hidden_field :user_id, value: current_user.id %>
+  </div>
+
+  <div class="field">
+    <% form.label :room_id %>
+    <%= form.hidden_field :room_id, id: :rume_room_id %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>
+
+<%= link_to 'Show', @rume %> |
+<%= link_to 'Back', rumes_path %>

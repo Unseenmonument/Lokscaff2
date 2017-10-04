@@ -1,0 +1,14 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Message:</strong>
+  <%= @tottle.message %>
+</p>
+
+<p>
+  <strong>User:</strong>
+  <%= @tottle.user_id %>
+</p>
+
+<%= link_to 'Edit', edit_tottle_path(@tottle) %> |
+<%= link_to 'Back', tottles_path %>
