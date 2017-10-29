@@ -1,5 +1,6 @@
 class RumesController < ApplicationController
-  before_action :set_rume, only: [:show, :edit, :update, :destroy]
+  before_action :set_rume, only: [:show, :edit, :update, :destroy, :listen, :ignore]
+  before_action :authenticate_user!
 
   # GET /rumes
   # GET /rumes.json
@@ -10,11 +11,34 @@ class RumesController < ApplicationController
   # GET /rumes/1
   # GET /rumes/1.json
   def show
+
+    @user = current_user
+
+    @convos = Convo.all
+    @convo = Convo.new
+
   end
 
   # GET /rumes/new
   def new
+    @user = current_user
     @rume = Rume.new
+  end
+
+  def listen
+
+    current_user.listen_to.push(@rume.id)
+    current_user.save
+
+    redirect_to rume_path(@rume)
+  end
+
+  def ignore
+
+    current_user.listen_to.delete(@rume.id)
+    current_user.save
+
+    redirect_to rume_path(@rume)
   end
 
   # GET /rumes/1/edit
@@ -69,10 +93,10 @@ class RumesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def rume_param
-      params.require(:rume).permit(:name, :description, :user_id, :room_id)
+      params.require(:rume).permit(:creator, :name, :description, :user_id, :room_id)
     end
 
     def rume_params
-      params.require(:rume).permit(:name, :description, :guidelines, :user_id, :room_id)
+      params.require(:rume).permit(:creator, :name, :description, :guidelines, :user_id, :room_id)
     end
 end

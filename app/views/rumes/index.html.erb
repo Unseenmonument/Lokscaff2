@@ -22,9 +22,7 @@
         <td><%= rume.description %></td>
         <td><%= rume.listeners %></td>
         <td><%= rume.guidelines %></td>
-        <td><%= rume.user_id %></td>
-        <td><%= rume.room_id %></td>
-        <td><%= link_to 'Show', rume %></td>
+        <td><%= link_to 'Show', rume_path(rume) %></td>
         <td><%= link_to 'Edit', edit_rume_path(rume) %></td>
         <td><%= link_to 'Destroy', rume, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>

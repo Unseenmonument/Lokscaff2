@@ -1,0 +1,32 @@
+<h1>Conversations#news</h1>
+
+<%= form_for @convo, url: {action: "create" }, html: {class: "new-form"} do |form| %>
+
+
+  <div class="field">
+    <%= form.label :title %>
+    <%= form.text_field :title, id: :conversation_title %>
+  </div>
+
+  <div class="field">
+    <%= form.label :description %>
+    <%= form.text_area :description, id: :conversation_description %>
+  </div>
+
+  <div class="field">
+    <% form.label :user_id %>
+    <%= form.hidden_field :user_id, value: current_user.id %>
+  </div>
+
+  <div class="field">
+    <% form.label :convo_id %>
+    <%= form.hidden_field :convo_id, id: :conversation_convo_id %>
+  </div>  
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>
+
+
+<%= link_to 'Back', rumes_path %>

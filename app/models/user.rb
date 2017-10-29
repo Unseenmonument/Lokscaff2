@@ -5,10 +5,16 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :trackable, :validatable
 
   has_many :tottles
-  has_many :rooms
-  has_many :conversations
+  has_many :rumes
+  has_many :convos
   has_many :comments
 
+	has_many :conversations
+	has_many :rooms
 
+  serialize :following, Array
+  serialize :listen_to, Array
+
+  
 
 end

@@ -12,6 +12,11 @@
   <% end %>
 
   <div class="field">
+    <%= form.label :creator %>
+    <%= form.hidden_field :creator, value: @user.id %>
+  </div>
+
+  <div class="field">
     <%= form.label :name %>
     <%= form.text_field :name, id: :rume_name %>
   </div>
@@ -28,7 +33,7 @@
 
   <div class="field">
     <% form.label :room_id %>
-    <%= form.hidden_field :room_id, id: :rume_room_id %>
+    <%= form.hidden_field :room_id, value: @rume.id %>
   </div>
 
   <div class="actions">

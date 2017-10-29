@@ -1,0 +1,44 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Convos</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>User</th>
+      <th>Rume</th>
+      <th>Title</th>
+      <th>Description</th>
+      <th>Likes</th>
+      <th>Url</th>
+      <th>Convo</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @convos.each do |convo| %>
+      <% if convo.rume_id != @rume.id
+            print convo
+          else
+            print nil %>
+        <tr>
+          <td><%= convo.user_id %></td>
+          <td><%= convo.rume_id %></td>
+          <td><%= convo.title %></td>
+          <td><%= convo.description %></td>
+          <td><%= convo.likes %></td>
+          <td><%= convo.url %></td>
+          <td><%= convo.convo_id %></td>
+          <td><%= link_to 'Show', convo %></td>
+          <td><%= link_to 'Edit', edit_convo_path(convo) %></td>
+          <td><%= link_to 'Destroy', convo, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        </tr>
+      <% end %>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Convo', new_convo_path %>

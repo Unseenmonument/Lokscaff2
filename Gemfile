@@ -29,6 +29,10 @@ gem 'mini_magick'
 
 gem 'bcrypt', platforms: :ruby
 
+
+gem 'activerecord-reputation-system', '~> 3.0', '>= 3.0.1', require: 'reputation_system'
+
+
 # Use CoffeeScript for .coffee assets and views
 gem 'coffee-rails', '~> 4.2'
 # Turbolinks makes navigating your web application faster. Read more: https://github.com/turbolinks/turbolinks
