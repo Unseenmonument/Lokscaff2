@@ -27,7 +27,7 @@ gem 'font-awesome-rails'
 
 gem 'mini_magick'
 
-gem 'bcrypt', platforms: :ruby
+
 
 
 gem 'activerecord-reputation-system', '~> 3.0', '>= 3.0.1', require: 'reputation_system'

@@ -206,7 +206,6 @@ PLATFORMS
 
 DEPENDENCIES
   activerecord-reputation-system (~> 3.0, >= 3.0.1)
-  bcrypt (~> 3.1.7)
   bootstrap-sass
   byebug
   capybara (~> 2.13)
