@@ -2,5 +2,5 @@
 
 <%= render 'form', comment: @comment %>
 
-<%= link_to 'Show', @comment %> |
-<%= link_to 'Back', comments_path %>
+<%= link_to 'Show', rume_convo_comment_path(@rume, @convo, @comment) %> |
+<%= link_to 'Back', rume_convo_path(@rume, @convo) %>

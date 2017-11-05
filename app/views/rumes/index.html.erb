@@ -8,9 +8,7 @@
       <th>Name</th>
       <th>Description</th>
       <th>Listeners</th>
-      <th>Guidelines</th>
       <th>User</th>
-      <th>Room</th>
       <th colspan="3"></th>
     </tr>
   </thead>
@@ -18,13 +16,17 @@
   <tbody>
     <% @rumes.each do |rume| %>
       <tr>
-        <td><%= rume.name %></td>
+        <td><%= link_to rume.name, rume_path(rume) %></td>
         <td><%= rume.description %></td>
-        <td><%= rume.listeners %></td>
-        <td><%= rume.guidelines %></td>
-        <td><%= link_to 'Show', rume_path(rume) %></td>
-        <td><%= link_to 'Edit', edit_rume_path(rume) %></td>
-        <td><%= link_to 'Destroy', rume, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= rume.listeners.count %></td>
+        <td> <% if current_user.id == rume.user_id %>
+                <%=  link_to 'Edit', edit_rume_path(rume) %>
+             <% end %>
+        </td>
+        <td> <% if current_user.id == rume.user_id %>
+                  <%= link_to 'Destroy', rume, method: :delete, data: { confirm: 'Are you sure?' } %>
+             <% end %>
+        </td>
       </tr>
     <% end %>
   </tbody>

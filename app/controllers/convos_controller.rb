@@ -1,5 +1,5 @@
 class ConvosController < ApplicationController
-  before_action :set_convo, only: [:show, :edit, :update, :destroy]
+  before_action :set_convo, only: [:show, :edit, :update, :destroy, :upvote, :downvote]
   before_action :authenticate_user!
 
   # GET /convos
@@ -7,6 +7,41 @@ class ConvosController < ApplicationController
   def index
     @rume = Rume.find(params[:rume_id])
     @convos = Convo.all
+  end
+  
+  
+  def upvote
+    
+    if !current_user.upvotes.include?(@convo.id)
+      current_user.upvotes.push(@convo.id)
+      current_user.downvotes.delete(@convo.id)
+    end
+    current_user.save
+    
+    if !@convo.upvotes.include?(current_user.id)
+      @convo.upvotes.push(current_user.id)
+      @convo.downvotes.delete(current_user.id)
+    end
+    @convo.save
+
+    redirect_back(fallback_location: root_path) 
+  end
+
+  def downvote
+    
+    if !current_user.downvotes.include?(@convo.id)
+      current_user.downvotes.push(@convo.id)
+      current_user.upvotes.delete(@convo.id)
+    end
+    current_user.save
+    
+    if !@convo.downvotes.include?(current_user.id)
+      @convo.downvotes.push(current_user.id)
+      @convo.upvotes.delete(current_user.id)
+    end
+    @convo.save
+
+    redirect_back(fallback_location: root_path) 
   end
 
   # GET /convos/1
@@ -17,6 +52,12 @@ class ConvosController < ApplicationController
     @comments = Comment.all
 
     @comment = Comment.new
+    
+    @downvotes = @convo.downvotes.count
+    @upvotes = @convo.upvotes.count
+    
+    @downvotescom = @comment.downvote_com.count 
+    @upvotescom = @comment.upvote_com.count
   end
 
   # GET /convos/new
@@ -35,10 +76,19 @@ class ConvosController < ApplicationController
   # POST /convos.json
   def create
     @convo = Convo.new(convo_params)
+    
+    if !current_user.upvotes.include?(@convo.id)
+      current_user.upvotes.push(@convo.id)
+    end
+    current_user.save
+    
+    if !@convo.upvotes.include?(current_user)
+      @convo.upvotes.push(current_user.id)
+    end
 
     respond_to do |format|
       if @convo.save
-        format.html { redirect_to @convo, notice: 'Convo was successfully created.' }
+        format.html { redirect_to rume_convo_path(@convo.rume_id, @convo), notice: 'Convo was successfully created.' }
         format.json { render :show, status: :created, location: @convo }
       else
         format.html { render :new }
@@ -50,9 +100,10 @@ class ConvosController < ApplicationController
   # PATCH/PUT /convos/1
   # PATCH/PUT /convos/1.json
   def update
+    
     respond_to do |format|
       if @convo.update(convo_params)
-        format.html { redirect_to @convo, notice: 'Convo was successfully updated.' }
+        format.html { redirect_to rume_convo_path(@convo.rume_id, @convo), notice: 'Convo was successfully updated.' }
         format.json { render :show, status: :ok, location: @convo }
       else
         format.html { render :edit }
@@ -66,7 +117,7 @@ class ConvosController < ApplicationController
   def destroy
     @convo.destroy
     respond_to do |format|
-      format.html { redirect_to convos_url, notice: 'Convo was successfully destroyed.' }
+      format.html { redirect_back fallback_location: root_path, notice: 'Convo was successfully destroyed.' }
       format.json { head :no_content }
     end
   end

@@ -1,5 +1,5 @@
 class CommentsController < ApplicationController
-  before_action :set_comment, only: [:show, :edit, :update, :destroy]
+  before_action :set_comment, only: [:show, :edit, :update, :destroy, :upvote, :downvote]
   before_action :authenticate_user!
 
   # GET /comments
@@ -16,12 +16,54 @@ class CommentsController < ApplicationController
     @convo = Convo.find(params[:convo_id])
     redirect_to :back, notice: "Your Vote Has Been Added"
   end
+  
+    def upvote
+      
+    if !current_user.upvote_com.include?(@comment.id)
+      current_user.upvote_com.push(@comment.id)
+      current_user.downvote_com.delete(@comment.id)
+    end
+    current_user.save
+    
+    if !@comment.upvote_com.include?(current_user)
+      @comment.upvote_com.push(current_user.id)
+      @comment.downvote_com.delete(current_user.id)
+    end
+    @comment.save
+
+    redirect_back(fallback_location: root_path)
+  end
+
+  def downvote
+    
+    if !current_user.downvote_com.include?(@comment.id)
+      current_user.downvote_com.push(@comment.id)
+      current_user.upvote_com.delete(@comment.id)
+    end
+    current_user.save
+    
+    if !@comment.downvote_com.include?(current_user.id)
+      @comment.downvote_com.push(current_user.id)
+      @comment.upvote_com.delete(current_user.id)
+    end
+    @comment.save
+
+    redirect_back(fallback_location: root_path)
+  end
 
   # GET /comments/1
   # GET /comments/1.json
   def show
     @rume = Rume.find(params[:rume_id])
     @convo = Convo.find(params[:convo_id])
+    @comment = Comment.find(params[:id])
+    
+    @downvotescom = @comment.downvote_com.count * -1
+    @upvotescom = @comment.upvote_com.count
+    
+    @votescom = @upvotescom + @downvotescom
+    
+    
   end
 
   # GET /comments/new
@@ -33,8 +75,7 @@ class CommentsController < ApplicationController
 
   # GET /comments/1/edit
   def edit
-    if @rume = Rume.find(params[:rume_id]) == nil
-    then @user = User.find
+    @rume = Rume.find(params[:rume_id])
     @convo = Convo.find(params[:convo_id])
   end
 
@@ -42,9 +83,16 @@ class CommentsController < ApplicationController
   # POST /comments.json
   def create
     @comment = Comment.new(comment_params)
-
-
-    respond_to do |format|
+    
+    if !current_user.upvote_com.include?(@comment.id)
+      current_user.upvote_com.push(@comment.id)
+    end
+    current_user.save
+    
+    if !@comment.upvote_com.include?(current_user)
+      @comment.upvote_com.push(current_user.id)
+    end
+     respond_to do |format|
       if @comment.save
         format.html { redirect_to rume_convo_path(rume_id: @comment.rume_id, id: @comment.convo_id), notice: 'Comment was successfully created.' }
         format.json { render :show, status: :created, location: @comment }
@@ -60,7 +108,7 @@ class CommentsController < ApplicationController
   def update
     respond_to do |format|
       if @comment.update(comment_params)
-        format.html { redirect_to @comment, notice: 'Comment was successfully updated.' }
+        format.html { redirect_to rume_convo_path(@comment.rume_id, @comment.convo_id), notice: 'Comment was successfully updated.' }
         format.json { render :show, status: :ok, location: @comment }
       else
         format.html { render :edit }
@@ -74,7 +122,7 @@ class CommentsController < ApplicationController
   def destroy
     @comment.destroy
     respond_to do |format|
-      format.html { redirect_to comments_url, notice: 'Comment was successfully destroyed.' }
+      format.html { redirect_back fallback_location: root_path, notice: 'Comment was successfully destroyed.' }
       format.json { head :no_content }
     end
   end

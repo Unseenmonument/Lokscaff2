@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171027183125) do
+ActiveRecord::Schema.define(version: 20171104164750) do
 
   create_table "comments", force: :cascade do |t|
     t.text "text"
@@ -22,6 +22,8 @@ ActiveRecord::Schema.define(version: 20171027183125) do
     t.integer "dislikes"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.text "upvote_com"
+    t.text "downvote_com"
   end
 
   create_table "conversations", force: :cascade do |t|
@@ -48,6 +50,22 @@ ActiveRecord::Schema.define(version: 20171027183125) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "comments"
+    t.text "upvotes"
+    t.text "downvotes"
+  end
+
+  create_table "products", force: :cascade do |t|
+    t.integer "quantity"
+    t.string "name"
+    t.text "description"
+    t.float "price"
+    t.text "reviews"
+    t.integer "user_id"
+    t.integer "product_id"
+    t.integer "store_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "image"
   end
 
   create_table "rooms", force: :cascade do |t|
@@ -115,8 +133,22 @@ ActiveRecord::Schema.define(version: 20171027183125) do
     t.integer "room_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.text "listeners"
     t.integer "creator"
+    t.text "listeners"
+  end
+
+  create_table "stores", force: :cascade do |t|
+    t.string "name"
+    t.text "description"
+    t.text "products"
+    t.text "location"
+    t.integer "store_id"
+    t.integer "user_id"
+    t.string "email"
+    t.string "phone_number"
+    t.text "address"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "tottles", force: :cascade do |t|
@@ -145,6 +177,11 @@ ActiveRecord::Schema.define(version: 20171027183125) do
     t.string "location"
     t.text "listen_to"
     t.text "following"
+    t.text "upvotes"
+    t.text "downvotes"
+    t.text "upvote_com"
+    t.text "downvote_com"
+    t.string "avatar"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end

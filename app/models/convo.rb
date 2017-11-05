@@ -5,6 +5,7 @@ class Convo < ApplicationRecord
 	
 	has_many :comments
 
-
+	serialize :upvotes, Array
+	serialize :downvotes, Array
 
 end

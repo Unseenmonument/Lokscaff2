@@ -16,6 +16,8 @@ class RumesController < ApplicationController
 
     @convos = Convo.all
     @convo = Convo.new
+    
+
 
   end
 
@@ -26,17 +28,31 @@ class RumesController < ApplicationController
   end
 
   def listen
-
-    current_user.listen_to.push(@rume.id)
+    
+    if !current_user.listen_to.include?(@rume.id)
+      current_user.listen_to.push(@rume.id)
+    end
     current_user.save
+    
+    if !@rume.listeners.include?(current_user)
+      @rume.listeners.push(current_user.id)
+    end
+    @rume.save
 
     redirect_to rume_path(@rume)
   end
 
   def ignore
-
-    current_user.listen_to.delete(@rume.id)
+    
+    if current_user.listen_to.include?(@rume.id)
+      current_user.listen_to.delete(@rume.id)
+    end
     current_user.save
+    
+    if @rume.listeners.include?(current_user.id)
+      @rume.listeners.delete(current_user.id)
+    end
+    @rume.save
 
     redirect_to rume_path(@rume)
   end
@@ -49,7 +65,16 @@ class RumesController < ApplicationController
   # POST /rumes.json
   def create
     @rume = Rume.new(rume_param)
-
+    
+    if !current_user.listen_to.include?(@rume)
+      current_user.listen_to.push(@rume.id)
+    end
+    current_user.save
+    
+    if !@rume.listeners.include?(current_user)
+      @rume.listeners.push(current_user.id)
+    end
+  
     respond_to do |format|
       if @rume.save
         format.html { redirect_to @rume, notice: 'Rume was successfully created.' }
@@ -80,7 +105,7 @@ class RumesController < ApplicationController
   def destroy
     @rume.destroy
     respond_to do |format|
-      format.html { redirect_to rumes_url, notice: 'Rume was successfully destroyed.' }
+      format.html { redirect_back fallback_location: root_path, notice: 'Rume was successfully destroyed.' }
       format.json { head :no_content }
     end
   end

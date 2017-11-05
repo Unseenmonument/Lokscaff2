@@ -31,8 +31,9 @@
   <thead>
     <tr>
       <th>Name</th>
+      <th> votes </th>
       <th>Comment</th>
-      <th colspan="3"></th>
+      <th colspan="5"></th>
     </tr>
   </thead>
 
@@ -46,19 +47,24 @@
 
         <tr>
           <td><%= comment.user.name %></td>
+          <td> <%= link_to "↑", upvotecom_path(@rume.id, @convo.id, comment.id) %> 
+          <%= comment.upvote_com.count - comment.downvote_com.count %> 
+          <%= link_to "↓", downvotecom_path(@rume.id, @convo.id, comment.id) %> </td>
           <td><%= comment.text %></td>
-          <td><%= link_to 'Edit', edit_rume_convo_comment_path(@rume, @convo, comment, type: "up") method: "post" %> </td>
-          <td>|<%= link_to "Up", up_rume_convo_comment_path(@rume, @convo, comment) %></td>
-          <td>|<%= link_to "Down", down_rume_convo_comment_path(@rume, @convo, comment, type: "down") method: "post" %></td>
-          <td><%= link_to 'Destroy', comment, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+          <td> <% if current_user.id == comment.user_id %>
+                      <%=  link_to 'Edit', edit_rume_convo_comment_path(@rume, @convo, comment) %> |
+                      <%=  link_to 'Delete', comment, method: :delete, data: { confirm: 'Are you sure?' } %>
+               <% end %> </td>
         </tr>
       <% end %>
     <% end %>
   </tbody>
 </table>
 
+<br>
+<br>
 
-
-<%= link_to 'New Comment', new_rume_convo_comment_path(@rume, @convo, @comment) %>
-<%= link_to 'Edit', edit_rume_convo_path(@rume, @convo) %> |
-<%= link_to 'Back', rume_path(@rume) %>
+<% if current_user.id == @convo.user_id %>
+  <%= link_to 'Edit', edit_rume_convo_path(@rume, @convo) %> |
+  <%= link_to 'Back', rume_path(@rume) %>
+<% end %>
