@@ -48,13 +48,20 @@ class ConvosController < ApplicationController
   # GET /convos/1.json
   def show
     @rume = Rume.find(params[:rume_id])
+    @rume = @rume.id
+    
     @convo = Convo.find(params[:id])
-    @comments = Comment.all
-
-    @comment = Comment.new
     
     @downvotes = @convo.downvotes.count
     @upvotes = @convo.upvotes.count
+    
+    
+    
+    @store = nil
+    
+    @comments = Comment.all
+
+    @comment = Comment.new
     
     @downvotescom = @comment.downvote_com.count 
     @upvotescom = @comment.upvote_com.count
@@ -131,5 +138,9 @@ class ConvosController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def convo_params
       params.require(:convo).permit(:user_id, :rume_id, :title, :description, :convo_id)
+    end
+    
+    def comment_params
+      params.require(:comment).permit(:text, :user_id, :rume_id, :convo_id, :comment_id, :likes, :dislikes, :store_id)
     end
 end

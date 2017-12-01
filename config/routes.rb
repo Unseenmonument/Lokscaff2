@@ -7,7 +7,10 @@ Rails.application.routes.draw do
     resources :rumes
     resources :convos
     resources :stores do
-      resources :products
+      resources :comments
+      resources :products do
+        resources :comments
+      end
     end
     post 'stores/makestore' => 'stores#makestore', as: 'makestore'
   end
@@ -16,14 +19,14 @@ Rails.application.routes.draw do
   get 'user/:id/listen' => 'user#follow', as: 'follow'
   get 'user/:id/ignore' => 'user#unfollow', as: 'unfollow'
 
-  # resources :comments
+
   
-  resources :comments do
-    resources :comments
-  end
+   resources :comments do
+   resources :comments
+   end
   
-  get 'rumes/:rume_id/convos/:convo_id/comments/:id/upvotes' => 'comments#upvote', as: 'upvotecom'
-  get 'rumes/:rume_id/convos/:convo_id/comments/:id/downvotes' => 'comments#downvote', as: 'downvotecom'
+  get 'comments/:id/upvotes' => 'comments#upvote', as: 'upvotecom'
+  get 'comments/:id/downvotes' => 'comments#downvote', as: 'downvotecom'
 
 
 
@@ -46,7 +49,9 @@ Rails.application.routes.draw do
 
   resources :votes
 
-  resources :tottles, :rooms
+  resources :tottles, :stores do
+    resources :comments
+  end
 	
   devise_for :users
   

@@ -1,4 +1,4 @@
-<%= form_with(model: comment, local: true) do |form| %>
+<%= form_with(model: @comment, local: true) do |form| %>
   <% if comment.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(comment.errors.count, "error") %> prohibited this comment from being saved:</h2>
@@ -12,7 +12,7 @@
   <% end %>
 
   <div class="field">
-    <%= form.label :Comment %>
+    <%= form.label :text, "Comment" %>
     <%= form.text_area :text, id: :comment_text %>
   </div>
 
@@ -23,17 +23,17 @@
 
   <div class="field">
     <% form.label :rume_id %>
-    <%= form.hidden_field :rume_id, value: @rume.id %>
+    <%= form.hidden_field :rume_id, value: @rume %>
   </div>
 
   <div class="field">
     <% form.label :convo_id %>
-    <%= form.hidden_field :convo_id, value: @convo.id %>
+    <%= form.hidden_field :convo_id, value: nil %>
   </div>
-
+  
   <div class="field">
-    <% form.label :comment_id %>
-    <%= form.hidden_field :comment_id, value: @comment.id %>
+    <% form.label :store_id %>
+    <%= form.hidden_field :store_id, value: @store %>
   </div>
 
   <div class="field">
@@ -45,6 +45,17 @@
     <% form.label :dislikes %>
     <%= form.hidden_field :dislikes, id: :comment_dislikes %>
   </div>
+  
+  <div class="field">
+    <% form.label :commentable_id %>
+    <%= form.hidden_field :commentable_id, value: commentable.id %>
+  </div>
+  
+  <div class="field">
+    <% form.label :commentable_type %>
+    <%= form.hidden_field :commentable_type, value: commentable.class %>
+  </div>
+
 
   <div class="actions">
     <%= form.submit %>

@@ -1,47 +1,48 @@
-<h1>Stores#new</h1>
+<h1>Stores#new stuff</h1>
 <p>Find me in app/views/stores/new.html.erb</p>
 
-<%= form_tag user_makestore_path do %>
-    <%= label_tag :Name %>
-    <%= text_field_tag :name, nil, placeholder: "Store Name" %>
+<%= form_with url: user_makestore_path do |f| %>
+
+    <%= f.label :name, "Store Name" %>
+    <%= f.text_field :name %>
     
     <br>
     
-    <%= label_tag :Email %>
-    <%= text_field_tag :email, nil, placeholder: "Email Address" %>
+    <%= f.label :email %>
+    <%= f.text_field :email %>
 
     <br>
 
-    <%= label_tag :Phone_Number %>
-    <%= text_field_tag :phone_number, nil, placeholder: "Phone Number" %>
+    <%= f.label :phone_Number %>
+    <%= f.text_field :phone_number %>
 
     <br>
     
-    <%= label_tag :Location %>
-    <%= text_field_tag :location, nil, placeholder: "Location" %>
+    <%= f.label :location %>
+    <%= f.text_field :location %>
     
     <br>
     
-    <%= label_tag :Products %>
-    <%= text_field_tag :products, nil, placeholder: "Store Products" %>
+    <%= f.label :products %>
+    <%= f.text_field :products %>
     
     <br>
     
-    <%= label_tag :description %>
-    <%= text_area_tag :description, nil, placeholder: "Description" %>
+    <%= f.label :description %>
+    <%= f.text_area :description %>
     
     <br>
     
-    <% label_tag :user_id %>
-    <% hidden_field_tag :user_id, value: current_user.id %>
+    <% f.label :user_id %>
+    <% f.hidden_field :user_id, value: current_user.id %>
     
     <br>
     
-    <% label_tag :store_id %>
-    <% hidden_field_tag :store_id, value: @store.id %>
+    <% f.label :store_id %>
+    <% f.hidden_field :store_id, value: @store.id %>
     
     <br>
     
-    <%= submit_tag "Make Your Store" %>
+    <%= f.submit %>
     
 <% end %>

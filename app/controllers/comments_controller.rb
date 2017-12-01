@@ -1,5 +1,6 @@
 class CommentsController < ApplicationController
   before_action :set_comment, only: [:show, :edit, :update, :destroy, :upvote, :downvote]
+  # before_action :load_commentable
   before_action :authenticate_user!
 
   # GET /comments
@@ -68,8 +69,10 @@ class CommentsController < ApplicationController
 
   # GET /comments/new
   def new
-    @rume = Rume.find(params[:rume_id])
-    @convo = Convo.find(params[:convo_id])
+    @rume = Rume.find(params[:id])
+    @convo = Convo.find(params[:id])
+    @store = Store.find(params[:id])
+
     @comment = Comment.new
   end
 
@@ -83,6 +86,7 @@ class CommentsController < ApplicationController
   # POST /comments.json
   def create
     @comment = Comment.new(comment_params)
+
     
     if !current_user.upvote_com.include?(@comment.id)
       current_user.upvote_com.push(@comment.id)
@@ -94,7 +98,7 @@ class CommentsController < ApplicationController
     end
      respond_to do |format|
       if @comment.save
-        format.html { redirect_to rume_convo_path(rume_id: @comment.rume_id, id: @comment.convo_id), notice: 'Comment was successfully created.' }
+        format.html { redirect_back(fallback_location: root_path) }
         format.json { render :show, status: :created, location: @comment }
       else
         format.html { render :new }
@@ -135,6 +139,7 @@ class CommentsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def comment_params
-      params.require(:comment).permit(:text, :user_id, :rume_id, :convo_id, :comment_id, :likes, :dislikes)
+      params.require(:comment).permit(:text, :user_id, :rume_id, :convo_id, :likes, :dislikes, :store_id, :commentable_id, :commentable_type)
     end
+    
 end

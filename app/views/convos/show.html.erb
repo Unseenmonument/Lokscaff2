@@ -1,8 +1,8 @@
 <p id="notice"><%= notice %></p>
 
 <p>
-  <strong>User:</strong>
-  <%= @convo.user_id %>
+  <strong>Creator:</strong>
+  <%= @convo.user.name %>
 </p>
 
 <p>
@@ -25,7 +25,7 @@
   <%= @convo.url %>
 </p>
 
-<%= render 'comments/form', comment: @comment %>
+<%= render 'comments/form', comment: Comment.new, commentable: @convo %>
 
 <table>
   <thead>
@@ -40,16 +40,17 @@
   <tbody>
     <% @comments.each do |comment| %>
 
-      <%  if comment.convo_id != @convo.id
+      <%  if comment.commentable_id != @convo.id || comment.commentable_type != "Convo"
             print comment
           else
-            print nil %>
+            print nil%>
+          
 
         <tr>
           <td><%= comment.user.name %></td>
-          <td> <%= link_to "↑", upvotecom_path(@rume.id, @convo.id, comment.id) %> 
+          <td> <%= link_to "↑", upvotecom_path(comment.id) %> 
           <%= comment.upvote_com.count - comment.downvote_com.count %> 
-          <%= link_to "↓", downvotecom_path(@rume.id, @convo.id, comment.id) %> </td>
+          <%= link_to "↓", downvotecom_path(comment.id) %> </td>
           <td><%= comment.text %></td>
           <td> <% if current_user.id == comment.user_id %>
                       <%=  link_to 'Edit', edit_rume_convo_comment_path(@rume, @convo, comment) %> |

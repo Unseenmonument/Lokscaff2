@@ -26,34 +26,13 @@
     </tr>
   </thead>
 
-  <tbody>
-    <% @products.each do |product| %>
-
-      <%  if product.store_id != @store.id
-            print product
-          else
-            print nil %>
-
-        <tr>
-          <td><%= product.name %></td>
-          <td> <%= link_to "↑", upvotecom_path(@rume.id, @convo.id, comment.id) %> 
-          <%= comment.upvote_com.count - comment.downvote_com.count %> 
-          <%= link_to "↓", downvotecom_path(@rume.id, @convo.id, comment.id) %> </td>
-          <td><%= product.text %></td>
-          <td> <% if current_user.id == product.user_id %>
-                      <%=  link_to 'Edit', edit_user_store_product_path(@user, @store, prpduct) %> |
-                      <%=  link_to 'Delete', product, method: :delete, data: { confirm: 'Are you sure?' } %>
-               <% end %> </td>
-        </tr>
-      <% end %>
-    <% end %>
-  </tbody>
+  
 </table>
 
 <br>
 <br>
 
-<%= render 'comments/form', comment: @comment %>
+
 
 <table>
   <thead>
@@ -64,23 +43,25 @@
       <th colspan="5"></th>
     </tr>
   </thead>
+  
+  <%= render 'comments/form', comment: Comment.new, commentable: @store %>
 
   <tbody>
     <% @comments.each do |comment| %>
-
-      <%  if comment.convo_id != @convo.id
+    
+      <%  if comment.commentable_id != @store.id || comment.commentable_type != "Store"
             print comment
           else
             print nil %>
 
         <tr>
           <td><%= comment.user.name %></td>
-          <td> <%= link_to "↑", upvotecom_path(@user.id, @store.id, comment.id) %> 
+          <td> <%= link_to "↑", upvotecom_path(comment.id) %> 
           <%= comment.upvote_com.count - comment.downvote_com.count %> 
-          <%= link_to "↓", downvotecom_path(@user.id, @store.id, comment.id) %> </td>
+          <%= link_to "↓", downvotecom_path(comment.id) %> </td>
           <td><%= comment.text %></td>
           <td> <% if current_user.id == comment.user_id %>
-                      <%=  link_to 'Edit', edit_user_store_comment_path(@user, @store, comment) %> |
+                      <%=  link_to 'Edit', edit_store_comment_path(@store, comment) %> |
                       <%=  link_to 'Delete', comment, method: :delete, data: { confirm: 'Are you sure?' } %>
                <% end %> </td>
         </tr>
@@ -93,6 +74,11 @@
 <br>
 
 <% if current_user.id == @store.user_id %>
-  <%= link_to 'Edit', edit_user_store_path(@user, @product) %> |
-  <%= link_to 'Back', user_path(@user) %>
+  <%= link_to 'Edit', edit_user_store_path(current_user.id, @store) %> |
 <% end %>
+<%= link_to 'Add A Product', new_user_store_product_path(@user.id, @store.id, @product) %>
+
+<br>
+
+<%= link_to 'Back', 'javascript:history.go(-1);' %>
+

@@ -1,2 +1,40 @@
-<h1>Products#show</h1>
-<p>Find me in app/views/products/show.html.erb</p>
+<h1>Products#show</h1><p>Find me in app/views/products/show.html.erb</p>
+
+
+
+<%= render 'comments/form', comment: Comment.new, commentable: @product %>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th> votes </th>
+      <th>Comment</th>
+      <th colspan="5"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @comments.each do |comment| %>
+
+      <%  if comment.commentable_id != @convo.id || comment.commentable_type != "Product"
+            print comment
+          else
+            print nil%>
+          
+
+        <tr>
+          <td><%= comment.user.name %></td>
+          <td> <%= link_to "↑", upvotecom_path(comment.id) %> 
+          <%= comment.upvote_com.count - comment.downvote_com.count %> 
+          <%= link_to "↓", downvotecom_path(comment.id) %> </td>
+          <td><%= comment.text %></td>
+          <td> <% if current_user.id == comment.user_id %>
+                      <%=  link_to 'Edit', edit_rume_convo_comment_path(@rume, @convo, comment) %> |
+                      <%=  link_to 'Delete', comment, method: :delete, data: { confirm: 'Are you sure?' } %>
+               <% end %> </td>
+        </tr>
+      <% end %>
+    <% end %>
+  </tbody>
+</table>
