@@ -76,6 +76,9 @@
 <% if current_user.id == @store.user_id %>
   <%= link_to 'Edit', edit_user_store_path(current_user.id, @store) %> |
 <% end %>
+
+<br>
+
 <%= link_to 'Add A Product', new_user_store_product_path(@user.id, @store.id, @product) %>
 
 <br>

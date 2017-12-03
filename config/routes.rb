@@ -9,8 +9,8 @@ Rails.application.routes.draw do
     resources :stores do
       resources :comments
       resources :products do
-        resources :comments
       end
+      post 'products/newprod' => 'products#newprod', as: 'newprod'
     end
     post 'stores/makestore' => 'stores#makestore', as: 'makestore'
   end
@@ -18,24 +18,17 @@ Rails.application.routes.draw do
   get 'user/:id/show' => 'user#show'
   get 'user/:id/listen' => 'user#follow', as: 'follow'
   get 'user/:id/ignore' => 'user#unfollow', as: 'unfollow'
-
-
   
    resources :comments do
-   resources :comments
+      resources :comments
    end
   
   get 'comments/:id/upvotes' => 'comments#upvote', as: 'upvotecom'
   get 'comments/:id/downvotes' => 'comments#downvote', as: 'downvotecom'
 
-
-
   resources :rumes do
-    member { post :vote }
   	resources :convos do
-  	  member { post :vote }
   		resources :comments
-  		  member { post :vote }
   	end
   end
 
@@ -47,10 +40,16 @@ Rails.application.routes.draw do
   get 'rumes/:id/listen' => 'rumes#listen', as: 'listen'
   get 'rumes/:id/ignore' => 'rumes#ignore', as: 'ignore'
 
-  resources :votes
 
-  resources :tottles, :stores do
+  resources :tottles do
     resources :comments
+  end
+  
+  resources :stores do
+    resources :comments
+    resources :products do
+      resources :comments
+    end
   end
 	
   devise_for :users

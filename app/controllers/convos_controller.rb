@@ -48,23 +48,13 @@ class ConvosController < ApplicationController
   # GET /convos/1.json
   def show
     @rume = Rume.find(params[:rume_id])
-    @rume = @rume.id
-    
     @convo = Convo.find(params[:id])
     
     @downvotes = @convo.downvotes.count
     @upvotes = @convo.upvotes.count
     
-    
-    
-    @store = nil
-    
     @comments = Comment.all
-
     @comment = Comment.new
-    
-    @downvotescom = @comment.downvote_com.count 
-    @upvotescom = @comment.upvote_com.count
   end
 
   # GET /convos/new
@@ -80,7 +70,6 @@ class ConvosController < ApplicationController
   end
 
   # POST /convos
-  # POST /convos.json
   def create
     @convo = Convo.new(convo_params)
     

@@ -17,7 +17,7 @@
   <tbody>
     <% @comments.each do |comment| %>
 
-      <%  if comment.commentable_id != @convo.id || comment.commentable_type != "Product"
+      <%  if comment.commentable_id != @product.id || comment.commentable_type != "Product"
             print comment
           else
             print nil%>
@@ -30,7 +30,7 @@
           <%= link_to "↓", downvotecom_path(comment.id) %> </td>
           <td><%= comment.text %></td>
           <td> <% if current_user.id == comment.user_id %>
-                      <%=  link_to 'Edit', edit_rume_convo_comment_path(@rume, @convo, comment) %> |
+                      <%=  link_to 'Edit', edit_user_store_product_path(@user, @store, @product, comment) %> |
                       <%=  link_to 'Delete', comment, method: :delete, data: { confirm: 'Are you sure?' } %>
                <% end %> </td>
         </tr>

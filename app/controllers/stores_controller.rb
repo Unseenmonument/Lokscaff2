@@ -12,6 +12,18 @@ class StoresController < ApplicationController
     
   end
   
+  def show
+    
+    @store = Store.find(params[:id])
+    @products = Product.all
+    @user = current_user
+    @product = Product.new
+    
+    @comments = Comment.all
+    @comment = Comment.new
+    
+  end
+  
   def makestore
     @user = current_user
    
@@ -19,28 +31,17 @@ class StoresController < ApplicationController
     
     @store.save
     redirect_to user_store_path(@user.id, @store.id)
-    
   end
-
 
   def create
     @user = current_user
     @store = Store.create(name: params[:name], description: params[:description], products: params[:products], location: params[:location], user_id: params[:user_id], email: params[:email], phone_number: params[:phone_number], store_id: params[:store_id])
    
+   
     redirect_to user_store_path(@user.id, @store.id)
   end
 
   def edit
-  end
-  
-  def show
-    
-    @store = Store.find(params[:id])
-    @products = Product.all
-    @user = current_user
-    @comments = Comment.all
-    @product = Product.new
-    
   end
 
   def update

@@ -7,11 +7,9 @@ class User < ApplicationRecord
   has_many :tottles
   has_many :rumes
   has_many :convos
-  has_many :comments
+  has_many :comments, as: :commentable
   has_many :stores
-
-	has_many :conversations
-	has_many :rooms
+  has_many :products
 
   serialize :following, Array
   serialize :listen_to, Array

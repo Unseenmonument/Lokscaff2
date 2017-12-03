@@ -1,19 +1,10 @@
 <h1>Products#new</h1>
 
-
-<h1>Stores#new stuff</h1>
-<p>Find me in app/views/stores/new.html.erb</p>
-
-<%= form_with url: new_user_store_product_path do |f| %>
+<%= form_with url: user_store_newprod_path do |f| %>
 
     <%= f.label :name, "Product Name" %>
     <%= f.text_field :name %>
     
-    <br>
-    
-    <%= f.label :description %>
-    <%= f.text_field :description %>
-
     <br>
 
     <%= f.label :quantity %>
@@ -21,6 +12,17 @@
     
     <br>
     
+    <%= f.label :price %>
+    <%= f.text_field :price %>
+    
+
+    <br>
+    
+    <%= f.label :description %>
+    <%= f.text_area :description %>
+    
+    <br>
+
     <% f.label :user_id %>
     <% f.hidden_field :user_id, value: current_user.id %>
     
